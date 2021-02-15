@@ -5,7 +5,6 @@
 #include "TimerThree.h"
 #include "NoiseReduced.h"
 #include "SD.h"
-#include "SPI.h"
 
 Controller::Controller() {
     //Sets injector pin to output mode. All other pins default to input mode.
