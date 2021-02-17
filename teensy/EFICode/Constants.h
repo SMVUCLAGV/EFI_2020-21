@@ -9,23 +9,33 @@ void disableINJ();
 void dummy();
 void lowerStartupMod();
 
-// Define all the pin numbers
-#define HES_Pin 36 // (GP3) updated (digital) 
-//#define TPS_Pin A13 // updated (analog)
-//#define ECT_Pin A19 // updated (analog)
-//#define MAP_Pin A16 // updated (analog)
-//#define IAT_Pin A18 // updated (analog)
-#define INJ_Pin 31 // updated (digital)
-//#define FP_Pin A17  // updated (analog)
-//const int FRS_Pin = 6; // don't have
-#define SP1 7
-//#define OIN1_Pin A14
-//#define OIN2_Pin A15
-#define SP2 8
-#define SP3 39
-#define SP4 37
+// Assign MCU Pins to GPIO Pins
+#define GPIO_0  8
+#define GPIO_1  7
+#define GPIO_2  33
+#define GPIO_3  34
+#define GPIO_4  37
+#define GPIO_5  38
+#define GPIO_6  18
+#define GPIO_7  19
+#define GPIO_8  20
+#define GPIO_9  21
+#define GPIO_10 22
+#define GPIO_11 23
 
-#define LED_1 5
+// Assign Digital Peripherals
+#define HES_Pin // UPDATE
+#define INJ_Pin 0
+#define Buzzer_Pin 1
+#define LED_1 31
+
+// Assign Analog Sensors (from ADC Channels)
+#define TPS_Pin   // UPDATE
+#define ECT_Pin   // UPDATE
+#define MAP_Pin   // UPDATE
+#define IAT_Pin   // UPDATE
+#define OIN1_Pin  // UPDATE
+#define OIN2_Pin  // UPDATE
 
 const double Vs_5 = 5.00; //Volts
 const double Vs_3v3 = 3.30; //Volts
