@@ -3,7 +3,9 @@
 // MAX11624 ADC Class:
 //  Description:
 //  - refreshVals()
-//    - update all sensor values, make sensor values invalid
+//    - update all sensor values
+//      1) tell the adc to start collecting data, make sensor values invalid
+//      2) on interrupt, the values will be grabbed
 //  - validVals()
 //    - check if the values available are valid (since refreshVals was last called)
 //  - getChannel(int n)
@@ -23,20 +25,26 @@
 #include "SPI.h"
 
 // ADC SPI Communication Pins
-const int ADC_nCNVST_Pin = 9;
-const int ADC_nCS_Pin    = 10;
-const int ADC_nEOC_Pin   = 29;
-const int SPI_SCLK_Pin   = 27; // THIS MAY NOT WORK, MIGHT NEED TO BODGE THIS CONNECTION TO PIN GPIO 13
-const int SPI_MOSI_Pin   = 11;
-const int SPI_MISO_Pin   = 12;
+const int ADC_nCNVST_PIN = 9;
+const int ADC_nEOC_PIN   = 29;
+const int ADC_nCS_PIN    = 10;
+const int SPI_SCLK_PIN   = 27; // THIS MAY NOT WORK, MIGHT NEED TO BODGE THIS CONNECTION TO PIN GPIO 13 (of the teensy 3.6)
+const int SPI_MOSI_PIN   = 11;
+const int SPI_MISO_PIN   = 12;
+
+// SPI Settings
+SPISettings SPI_SETTINGS(1000000, MSBFIRST, SPI_MODE0); // 1 MHz, MODE0
 
 // MAX11624 Register Values:
-const char MAX11624_CONV_REG  = (0b1<<7)|(0b1111<<3)|(0b00<<0);  
-                                // (CONV_REG)|(CHAN N = 15)|(SCAN THROUGH CHAN N)
+const char MAX11624_CONV_REG  = (0b1<<7)|(0b1110<<3)|(0b00<<0);  
+                                // (CONV_REG)|(CHAN N = 14)|(SCAN THROUGH CHAN N)
 const char MAX11624_SETUP_REG = (0b01<<6)|(0b00<<4)|(0b01<<2)|(0b00<<0);  
                                 // (SETUP_REG)|(CLOCK MODE 00)|(EXT REF)|(D.C)
 const char MAX11624_AVG_REG   = (0b001<<5)|(0b1<<4)|(0b00<<2)|(0b00<<0);  
                                 // (AVG_REG)|(ENABLE AVG)|(AVG 4X)|(D.C)
+
+// Other Settings
+const int ADC_CHANNELS = 15;
 
 class ADC {
 public:
@@ -56,14 +64,15 @@ public:
   inline int ADC::getConvTime() {
     return convTime;
   }
-  
+
 private:
-  void handle_EOC(); // EOC interrupt
+  void handle_EOC();        // EOC interrupt
+  void dummy();             // dummy for interrupt
   volatile bool validVals;
   volatile bool fetchVals;
-  int convTime;
-  int valChannel[16];
-  int ERRORCHANNELS[16] = { -1, -1, -1, -1, -1, -1, -1, -1, 
+  int convTime;             // Time of the previous conversion
+  int valChannel[ADC_CHANNELS];
+  const int ERRORCHANNELS[ADC_CHANNELS] = { -1, -1, -1, -1, -1, -1, -1, -1, 
                             -1, -1, -1, -1, -1, -1, -1, -1};
 };
 
