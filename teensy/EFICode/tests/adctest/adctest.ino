@@ -1,11 +1,10 @@
 // Test file for adc class
-#include "Constants.h"
-#include "adc.h"
+#include "spi_adc.h"
 
-ADC* a;
+SPI_ADC* a;
 void setup() {
   Serial.begin(9600);
-  a = new ADC();
+  a = new SPI_ADC();
 }
 
 void loop() {
@@ -13,7 +12,7 @@ void loop() {
   a->refresh();
 
   // Data should be invalid here
-  int * data = a->getChannels();
+  const int * data = a->getChannels();
   for (int i = 0; i < ADC_CHANNELS; i++) {
     Serial.print(data[i]);
     Serial.print(", ");
