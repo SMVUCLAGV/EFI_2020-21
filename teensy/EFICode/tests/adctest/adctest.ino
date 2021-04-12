@@ -2,40 +2,111 @@
 #include "spi_adc.h"
 
 SPI_ADC* a;
+
+int valChannel[ADC_CHANNELS];
+
 void setup() {
   Serial.begin(9600);
-  a = new SPI_ADC();
+//  a = new SPI_ADC();
+
+  // Conversion Start Pin
+  pinMode(ADC_nCNVST_PIN, OUTPUT);
+  digitalWrite(ADC_nCNVST_PIN, HIGH);
+
+  // Setup SPI
+  pinMode(ADC_nCS_PIN, OUTPUT);
+  digitalWrite(ADC_nCS_PIN, HIGH);
+
+  SPI.begin();
+
+  
+  SPISettings SPI_PARAMS(1000000, MSBFIRST, SPI_MODE0); // 1 MHz, MODE0
+  SPI.beginTransaction(SPI_PARAMS);
+
+  // Select ADC
+  digitalWrite(ADC_nCS_PIN, LOW);
+    // Write to conversion, setup, and avg registers
+  SPI.transfer(MAX11624_CONV_REG);
+  SPI.transfer(MAX11624_SETUP_REG);
+  SPI.transfer(MAX11624_AVG_REG);
+    // De-Select ADC
+  digitalWrite(ADC_nCS_PIN, HIGH);
+
+  SPI.endTransaction();
 }
 
 void loop() {
-  delay(20);
-  a->refresh();
+  SPISettings SPI_PARAMS(1000000, MSBFIRST, SPI_MODE0); // 1 MHz, MODE0
+  SPI.beginTransaction(SPI_PARAMS);
 
-  // Data should be invalid here
-  const int * data = a->getChannels();
+  // Pull CNVST low for atleast 40 ns to start conversion
+  digitalWrite(ADC_nCNVST_PIN, LOW);
+  unsigned long temp = micros();
+  while( micros() < temp + 1); // waiting 100 ns (CHANGE TO TIMER?)
+  digitalWrite(ADC_nCNVST_PIN, HIGH);
+  
+  
+  while(digitalRead(ADC_nEOC_PIN));
+
+  SPI.beginTransaction(SPI_PARAMS);
+
+    // Select ADC
+  digitalWrite(ADC_nCS_PIN, LOW);
+
+    // Read from ADC's FIFO
+  int data = 0;
   for (int i = 0; i < ADC_CHANNELS; i++) {
-    Serial.print(data[i]);
-    Serial.print(", ");
+    data |= (int(SPI.transfer(0)) << 8); // MSBs first
+    data |= int(SPI.transfer(0));        // LSBs next
+    valChannel[i] = data;
   }
-  Serial.print("\n");
 
-  delay(20);
+    // De-Select ADC
+  digitalWrite(ADC_nCS_PIN, HIGH);
+
+  SPI.endTransaction();
+  
   
   // Get Data once then print it
-  data = a->getChannels();
   for (int i = 0; i < ADC_CHANNELS; i++) {
-    Serial.print(data[i]);
+    Serial.print(valChannel[i]);
     Serial.print(", ");
   }
   Serial.print("\n");
-
-  // Get Data agains to make sure it doesn't change
-  data = a->getChannels();
-  for (int i = 0; i < ADC_CHANNELS; i++) {
-    Serial.print(data[i]);
-    Serial.print(", ");
-  }
-  Serial.print("\n");
-
-  Serial.println(a->getConvTime());
+  Serial.println(millis());
+  
+  
+  
+  // MAX11624  Setup
+  
+//  delay(20);
+//  a->refresh();
+//
+//  // Data should be invalid here
+//  const int * data = a->getChannels();
+//  for (int i = 0; i < ADC_CHANNELS; i++) {
+//    Serial.print(data[i]);
+//    Serial.print(", ");
+//  }
+//  Serial.print("\n");
+//
+//  delay(20);
+//  
+//  // Get Data once then print it
+//  data = a->getChannels();
+//  for (int i = 0; i < ADC_CHANNELS; i++) {
+//    Serial.print(data[i]);
+//    Serial.print(", ");
+//  }
+//  Serial.print("\n");
+//
+//  // Get Data agains to make sure it doesn't change
+//  data = a->getChannels();
+//  for (int i = 0; i < ADC_CHANNELS; i++) {
+//    Serial.print(data[i]);
+//    Serial.print(", ");
+//  }
+//  Serial.print("\n");
+//
+//  Serial.println(a->getConvTime());
 }

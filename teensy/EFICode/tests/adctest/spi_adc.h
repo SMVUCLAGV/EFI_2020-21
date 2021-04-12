@@ -25,9 +25,9 @@
 #include "SPI.h"
 
 // ADC SPI Communication Pins
-const int ADC_nCNVST_PIN = 9;
-const int ADC_nEOC_PIN   = 29;
-const int ADC_nCS_PIN    = 10;
+const int ADC_nCNVST_PIN = 7;// teensy 3.6 vals -> 9;
+const int ADC_nEOC_PIN   = 9;// teensy 3.6 vals -> 29;
+const int ADC_nCS_PIN    = 8;// teensy 3.6 vals -> 10;
 const int SPI_SCLK_PIN   = 27; // THIS MAY NOT WORK, MIGHT NEED TO BODGE THIS CONNECTION TO PIN GPIO 13 (of the teensy 3.6)
 const int SPI_MOSI_PIN   = 11;
 const int SPI_MISO_PIN   = 12;
