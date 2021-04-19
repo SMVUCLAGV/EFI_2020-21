@@ -7,7 +7,7 @@ volatile bool SPI_ADC::validVals;
 volatile bool SPI_ADC::fetchVals;
 
 // SPI Settings
-SPISettings SPI_PARAMS(1000000, MSBFIRST, SPI_MODE0); // 1 MHz, MODE0
+SPISettings SPI_PARAMS(10000000, MSBFIRST, SPI_MODE0); // 1 MHz, MODE0
 
 SPI_ADC::SPI_ADC() {
 
@@ -58,24 +58,29 @@ void SPI_ADC::refresh() {
 const int * SPI_ADC::getChannels() {
   if (SPI_ADC::validVals) {
     if (SPI_ADC::fetchVals) {
-      // Get and store values from ADC FIFO
-      SPI.beginTransaction(SPI_PARAMS);
-
-        // Select ADC
-      digitalWrite(ADC_nCS_PIN, LOW);
-
         // Read from ADC's FIFO
-      int data = 0;
+      int data;
       for (int i = 0; i < ADC_CHANNELS; i++) {
-        data |= (int(SPI.transfer(0)) << 8); // MSBs first
-        data |= int(SPI.transfer(0));        // LSBs next
+        data = 0;
+        
+        SPI.beginTransaction(SPI_PARAMS);     // Get and store values from ADC FIFO
+        digitalWrite(ADC_nCS_PIN, LOW);       // Select ADC
+        data |= (int(SPI.transfer(0)) << 8);  // MSBs first
+        digitalWrite(ADC_nCS_PIN, HIGH);      // De-Select ADC
+        SPI.endTransaction();
+
+        unsigned long temp = micros();
+        while(micros() < temp + 5);
+
+        SPI.beginTransaction(SPI_PARAMS);     // Get and store values from ADC FIFO
+        digitalWrite(ADC_nCS_PIN, LOW);       // Select ADC
+        data |= int(SPI.transfer(0));         // LSBs next
+        digitalWrite(ADC_nCS_PIN, HIGH);      // De-Select ADC
+        SPI.endTransaction();
+
         valChannel[i] = data;
       }
 
-        // De-Select ADC
-      digitalWrite(ADC_nCS_PIN, HIGH);
-
-      SPI.endTransaction();
       SPI_ADC::fetchVals = false;
     }
 
