@@ -13,8 +13,8 @@ void lowerStartupMod();
 #define GPIO_0  8
 #define GPIO_1  7
 #define GPIO_2  33
-#define GPIO_3  34
-#define GPIO_4  37
+#define GPIO_3  34 // WON'T WORK ON conn board v1
+#define GPIO_4  37 // WON'T WORK ON conn board v1
 #define GPIO_5  38
 #define GPIO_6  18
 #define GPIO_7  19
@@ -24,10 +24,16 @@ void lowerStartupMod();
 #define GPIO_11 23
 
 // Assign Digital Peripherals
+#define INJ_Pin   1 // MISLABELED ON cont board v1 Schematic (this is correct)
+#define BUZZ_Pin  0 // MISLABELED ON cont board v1 Schematic (this is correct)
+#define LED_1     31
+
 #define HES_Pin // UPDATE
-#define INJ_Pin 0
-#define Buzzer_Pin 1
-#define LED_1 31
+#define DIP_1 35
+#define DIP_2 36
+#define DIP_3 39
+#define DIP_4 A21 // CHANGE THIS PIN IN THE FUTURE!
+#define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
 #define TPS_Pin   // UPDATE
