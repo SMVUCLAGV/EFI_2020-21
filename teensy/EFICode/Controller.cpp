@@ -5,6 +5,7 @@
 #include "TimerThree.h"
 #include "NoiseReduced.h"
 #include "SD.h"
+#include "spi_adc.h"
 
 Controller::Controller() {
     //Sets injector pin to output mode. All other pins default to input mode.
@@ -18,19 +19,23 @@ Controller::Controller() {
   
     // Initialize parameters with their starting values.
     initializeParameters();
-  
+
     // Update sensors to their initial values.
     readSensors();
+
+    //initialize a new spi_adc object
+    adc = new SPI_ADC();
   
     // Perform quick diagnostics here...
     // runDiagnostics();
   
     // Indicate ready
     //Serial.write("Ready to go!\n");
-
 }
 
 bool Controller::readSensors() {
+    adc->refresh();
+    const int* channels = adc->getChannels();
     TPS = getTPS();
     ECT = getTemp(ECT_Pin);
     IAT = getTemp(IAT_Pin);

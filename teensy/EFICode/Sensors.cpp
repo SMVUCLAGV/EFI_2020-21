@@ -43,10 +43,7 @@ const int ECT_INDEX = 1;
 
 //The following constants are to complete the following eq for temperature
 //
-// Temp = tempBeta / (ln(R) + (tempBeta/T_0 - lnR_0))
-//	where R is the resistance of the sensor (found using voltage divider)
-//	eq from: https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
-//
+// Temp = tempBeta / (ln(R) + (tempBeta/T_0 - lnR_0)) //	where R is the resistance of the sensor (found using voltage divider) //	eq from: https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation //
 const double tempBeta[2] = {3988,3988}; // tolerance: {+/-1%,+/-1.5%}
 const double T_0 = 298.15; // temp in Kelvin at which R_0 values are taken
 const double lnR_0[2] = {9.21034,8.4849};//8.45531}; // {ln(10000 (10000 +/-1%)),ln(4700 (4559 to 4841))}

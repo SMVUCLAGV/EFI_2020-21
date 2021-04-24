@@ -36,23 +36,23 @@ void lowerStartupMod();
 #define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
-#define TPS_Pin   // UPDATE
-#define ECT_Pin   // UPDATE
-#define MAP_Pin   // UPDATE
-#define IAT_Pin   // UPDATE
-#define OIN1_Pin  // UPDATE
-#define OIN2_Pin  // UPDATE
+#define TPS_CHAN   // UPDATE
+#define ECT_CHAN   // UPDATE
+#define MAP_CHAN   // UPDATE
+#define IAT_CHAN   // UPDATE
+#define OIN1_CHAN  // UPDATE
+#define OIN2_CHAN  // UPDATE
 
-const double Vs_5 = 5.00; //Volts
+const double Vs_5   = 5.00; //Volts
+const double Vref_5 = 5.00; // NEED TO PROPERLY MEASURE
 const double Vs_3v3 = 3.30; //Volts
 
-
 // Multiple by this number to convert analog readings to voltages from Op amps
-const double adcRef = Vs_3v3; //Volts
-const double maxADC = 1023;
-const double voltageConversion = adcRef / maxADC;
-const double opampVoltageDivider = 1000.0 / (1000 + 470);
-const double adcToOpampVin = adcRef / (maxADC * opampVoltageDivider);
+const double adcRef = Vref_5;
+const double maxADC = 4095;
+const double voltConv = adcRef / maxADC;
+//const double opampVoltageDivider = 1000.0 / (1000 + 470);
+//const double adcToOpampVin = adcRef / (maxADC * opampVoltageDivider);
 
 // Constants for calculating estimated injection times.
 const double engineDisplacement = 49.4E-6;    //meters^3
