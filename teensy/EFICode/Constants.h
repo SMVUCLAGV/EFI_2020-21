@@ -44,7 +44,7 @@ void lowerStartupMod();
 #define OIN2_CHAN  // UPDATE
 
 const double Vs_5   = 5.00; //Volts
-const double Vref_5 = 5.00; // NEED TO PROPERLY MEASURE
+const double Vref_5 = 4.98; // NEED TO PROPERLY MEASURE WITH FLUKE
 const double Vs_3v3 = 3.30; //Volts
 
 // Multiple by this number to convert analog readings to voltages from Op amps
