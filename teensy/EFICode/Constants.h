@@ -13,8 +13,8 @@ void lowerStartupMod();
 #define GPIO_0  8
 #define GPIO_1  7
 #define GPIO_2  33
-#define GPIO_3  34 // WON'T WORK ON conn board v1
-#define GPIO_4  37 // WON'T WORK ON conn board v1
+#define GPIO_3  34 // WON'T WORK ON conn board v1 *********************
+#define GPIO_4  37 // WON'T WORK ON conn board v1 *********************
 #define GPIO_5  38
 #define GPIO_6  18
 #define GPIO_7  19
@@ -28,7 +28,7 @@ void lowerStartupMod();
 #define BUZZ_Pin  0 // MISLABELED ON cont board v1 Schematic (this is correct)
 #define LED_1     31
 
-#define HES_Pin // UPDATE
+#define HES_Pin // UPDATE *****************************
 #define DIP_1 35
 #define DIP_2 36
 #define DIP_3 39
@@ -36,15 +36,15 @@ void lowerStartupMod();
 #define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
-#define TPS_CHAN   // UPDATE
-#define ECT_CHAN   // UPDATE
-#define MAP_CHAN   // UPDATE
-#define IAT_CHAN   // UPDATE
-#define OIN1_CHAN  // UPDATE
-#define OIN2_CHAN  // UPDATE
+#define TPS_CHAN  0 // UPDATE ***********************
+#define ECT_CHAN  4 // UPDATE ***********************
+#define MAP_CHAN   // UPDATE ***********************
+#define IAT_CHAN   // UPDATE ***********************
+#define OIN1_CHAN  // UPDATE ***********************
+#define OIN2_CHAN  // UPDATE ***********************
 
 const double Vs_5   = 5.00; //Volts
-const double Vref_5 = 4.98; // NEED TO PROPERLY MEASURE WITH FLUKE
+const double Vref_5 = 4.98; // NEED TO PROPERLY MEASURE WITH FLUKE **************************
 const double Vs_3v3 = 3.30; //Volts
 
 // Multiple by this number to convert analog readings to voltages from Op amps
