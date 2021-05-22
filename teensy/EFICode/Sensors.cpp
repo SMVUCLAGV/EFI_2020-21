@@ -19,7 +19,10 @@ const double TPS_90Deg = 865;
 double Controller::getTPS() {
   unsigned long currThrottleMeasurementTime = micros();
   // calculate open throttle area (i think)
-  double newTPS = 1 - cos(((double(analogRead(TPS_Pin))-TPS_0Deg)/(TPS_90Deg - TPS_0Deg))*HALF_PI);
+  //double newTPS = 1 - cos(((double(analogRead(TPS_Pin))-TPS_0Deg)/(TPS_90Deg - TPS_0Deg))*HALF_PI);
+
+  double newTPS_V = TPS_CHAN * voltConv;
+  //double newTPS = newTPS_V; //need to re-adjust TPS_0Deg and TPS_90Deg
   
   if(newTPS < 0)
     newTPS = 0;
@@ -54,14 +57,20 @@ double Controller::getTemp(int pin) {
   // TODO: Create log lookup table.
 
   int index; // identify which constants to use
-  switch(pin) {
-    case IAT_Pin: index = IAT_INDEX;
-    break;
-    case ECT_Pin: index = ECT_INDEX;
-    break;
-    default:  index = ECT_INDEX; // just in case
+  double tempR;
+  switch(pin) { //not sure what the pin value represents
+    case IAT_Pin: 
+      index = IAT_INDEX;
+      tempR = R_div[index] / (maxADC/IAT_CHAN - 1);   // find resistance of sensor
+      break;
+    case ECT_Pin: 
+      index = ECT_INDEX;
+      tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
+      break;
+    default:  
+      index = ECT_INDEX; // just in case
+      tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
   }
-  double tempR = R_div[index] / (maxADC/analogRead(pin) - 1); // find resistance of sensor
   return tempBeta[index] / (log(tempR) + tempConst[index]);   // return temperature
 }
 
@@ -76,7 +85,7 @@ const double MAPConversion = MAPSlope * adcToOpampVin;    // Pascals / 1023
 
 double Controller::getMAP() {
   //Calculates MAP, outputs in Pa
-  return MAPConversion * analogRead(MAP_Pin) + MAPOffset;
+  return MAPConversion * MAP_CHAN + MAPOffset;
 }
 
 // Analog output 1 factory default settings for voltage ranges.
@@ -99,7 +108,7 @@ double Controller::getAFR () {
   // Gets Reading from O2 Sensor.
   
   // Calculate initial AFR reading.
-  AFRVolts->addData(adcToOpampVin * analogRead(OIN1_Pin));
+  AFRVolts->addData(adcToOpampVin * OIN1_CHAN);
   AFR = AFRVolts->getData() * AO1slope + AO1minAFR;
   
   // If AFR is close to stoich, use narrow band output with greater precision.
