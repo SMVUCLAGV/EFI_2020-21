@@ -28,9 +28,9 @@
 const int ADC_nCNVST_PIN = 9;
 const int ADC_nEOC_PIN   = 29;
 const int ADC_nCS_PIN    = 10;
-const int SPI_SCLK_PIN   = 27;
-const int SPI_MOSI_PIN   = 11;
-const int SPI_MISO_PIN   = 12;
+const int ADC_SCLK_PIN   = 27;
+const int ADC_MOSI_PIN   = 11;
+const int ADC_MISO_PIN   = 12;
 
 // MAX11624 Register Values:
 const char MAX11624_CONV_REG  = (0b1<<7)|(0b1111<<3)|(0b00<<0);  

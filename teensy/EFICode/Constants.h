@@ -28,7 +28,7 @@ void lowerStartupMod();
 #define BUZZ_Pin  0 // MISLABELED ON cont board v1 Schematic (this is correct)
 #define LED_1     31
 
-#define HES_Pin // UPDATE
+#define HES_Pin GPIO_0// UPDATE
 #define DIP_1 35
 #define DIP_2 36
 #define DIP_3 39
