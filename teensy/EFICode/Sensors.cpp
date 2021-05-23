@@ -21,7 +21,7 @@ double Controller::getTPS() {
   // calculate open throttle area (i think)
   //double newTPS = 1 - cos(((double(analogRead(TPS_Pin))-TPS_0Deg)/(TPS_90Deg - TPS_0Deg))*HALF_PI);
 
-  double newTPS_V = TPS_CHAN * voltConv;
+  double newTPS_V = sensorVals[TPS_CHAN] * voltConv;
   //double newTPS = newTPS_V; //need to re-adjust TPS_0Deg and TPS_90Deg
   
   if(newTPS < 0)
@@ -58,12 +58,12 @@ const double R_divIAT = 9300; // resistance of other resistor in voltage divider
 const double R_divECT = 10000;
 
 double Controller::getIAT() {
-  double tempR = R_div[index] / (maxADC/IAT_CHAN - 1);
+  double tempR = R_div[index] / (maxADC/sensorVals[IAT_CHAN] - 1);
   return tempBetaIAT / (log(tempR) + tempConstIAT);
 }
 
 double Controller::getECT() {
-  double tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
+  double tempR = R_div[index] / (maxADC/sensorVals[ECT_CHAN] - 1);
   return tempBetaECT / (log(tempR) + tempConstECT);
 }
 
@@ -78,7 +78,7 @@ const double MAPConversion = MAPSlope * voltConv;    // Pascals / 1023
 
 double Controller::getMAP() {
   //Calculates MAP, outputs in Pa
-  return MAPConversion * MAP_CHAN + MAPOffset;
+  return MAPConversion * sensorVals[MAP_CHAN] + MAPOffset;
 }
 
 // Analog output 1 factory default settings for voltage ranges.
@@ -101,7 +101,7 @@ double Controller::getAFR () {
   // Gets Reading from O2 Sensor.
   
   // Calculate initial AFR reading.
-  AFRVolts->addData(voltConv * OIN1_CHAN);
+  AFRVolts->addData(voltConv * sensorVals[OIN1_CHAN]);
   AFR = AFRVolts->getData() * AO1slope + AO1minAFR;
   
   // If AFR is close to stoich, use narrow band output with greater precision.
