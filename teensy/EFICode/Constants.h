@@ -28,11 +28,7 @@ void lowerStartupMod();
 #define BUZZ_Pin  0 // MISLABELED ON cont board v1 Schematic (this is correct)
 #define LED_1     31
 
-<<<<<<< HEAD
-#define HES_Pin // UPDATE *****************************
-=======
 #define HES_Pin GPIO_0// UPDATE
->>>>>>> readvalues
 #define DIP_1 35
 #define DIP_2 36
 #define DIP_3 39
@@ -40,21 +36,12 @@ void lowerStartupMod();
 #define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
-<<<<<<< HEAD
-#define TPS_CHAN  0 // UPDATE ***********************
-#define ECT_CHAN  4 // UPDATE ***********************
-#define MAP_CHAN   // UPDATE ***********************
-#define IAT_CHAN   // UPDATE ***********************
-#define OIN1_CHAN  // UPDATE ***********************
-#define OIN2_CHAN  // UPDATE ***********************
-=======
 #define TPS_CHAN 1  // UPDATE
 #define ECT_CHAN 2  // UPDATE
 #define MAP_CHAN 3  // UPDATE
 #define IAT_CHAN 4  // UPDATE
 #define OIN1_CHAN 5 // UPDATE
 #define OIN2_CHAN 6 // UPDATE
->>>>>>> readvalues
 
 const double Vs_5   = 5.00; //Volts
 const double Vref_5 = 4.98; // NEED TO PROPERLY MEASURE WITH FLUKE **************************
@@ -97,7 +84,7 @@ const int MIN_TPS = 0;
 const int MAX_TPS = 1;
 
 // Define the BAUD_RATE to communicate with.
-const unsigned long BAUD_RATE = 921600; // In bits per second;
+const unsigned long BAUD_RATE = 912600; // In bits per second;
 const int DATA_RATE_PERIOD = 5000; // send back data every 5 ms
 
 // Define the range of values for RPM and Manifold Air Pressure
