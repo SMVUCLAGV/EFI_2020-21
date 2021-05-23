@@ -13,18 +13,17 @@ Controller::Controller() {
   
     //Initializes Serial input and output at the specified baud rate.
     Serial.begin(BAUD_RATE);
+    while(!Serial);
+    
   
     // Initializing message
-    //Serial.write("Initializing...\n");
+    Serial.write("Initializing...\n");
   
     // Initialize parameters with their starting values.
     initializeParameters();
-
+    
     // Update sensors to their initial values.
     readSensors();
-
-    //initialize a new spi_adc object
-    adc = new SPI_ADC();
   
     // Perform quick diagnostics here...
     // runDiagnostics();
@@ -82,6 +81,10 @@ void Controller::initializeParameters() {
     // Number of revolutions that must pass before recalculating RPM.
     constModifier = 1.0;
     previousRev = micros();
+
+    // Initialize ADC
+    adc = new SPI_ADC();
+    refreshAvailable = true;
     
     // Initialize AFR values.
     AFR = 0;

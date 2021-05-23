@@ -50,6 +50,7 @@ void SPI_ADC::refresh() {
   // Pull CNVST low for atleast 40 ns to start conversion
   digitalWrite(ADC_nCNVST_PIN, LOW);
   unsigned long temp = micros();
+    
   while( micros() < temp + 1); // waiting 100 ns (CHANGE TO TIMER?)
   digitalWrite(ADC_nCNVST_PIN, HIGH);
   SPI_ADC::validVals = false;

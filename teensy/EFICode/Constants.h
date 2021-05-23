@@ -84,7 +84,7 @@ const int MIN_TPS = 0;
 const int MAX_TPS = 1;
 
 // Define the BAUD_RATE to communicate with.
-const unsigned long BAUD_RATE = 921600; // In bits per second;
+const unsigned long BAUD_RATE = 9600; // In bits per second;
 const int DATA_RATE_PERIOD = 5000; // send back data every 5 ms
 
 // Define the range of values for RPM and Manifold Air Pressure
