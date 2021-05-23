@@ -22,7 +22,7 @@ double Controller::getTPS() {
   //double newTPS = 1 - cos(((double(analogRead(TPS_Pin))-TPS_0Deg)/(TPS_90Deg - TPS_0Deg))*HALF_PI);
 
   double newTPS_V = sensorVals[TPS_CHAN] * voltConv;
-  //double newTPS = newTPS_V; //need to re-adjust TPS_0Deg and TPS_90Deg
+  double newTPS = newTPS_V; //need to re-adjust TPS_0Deg and TPS_90Deg
   
   if(newTPS < 0)
     newTPS = 0;
@@ -58,12 +58,12 @@ const double R_divIAT = 9300; // resistance of other resistor in voltage divider
 const double R_divECT = 10000;
 
 double Controller::getIAT() {
-  double tempR = R_div[index] / (maxADC/sensorVals[IAT_CHAN] - 1);
+  double tempR = R_divIAT / (maxADC/sensorVals[IAT_CHAN] - 1);
   return tempBetaIAT / (log(tempR) + tempConstIAT);
 }
 
 double Controller::getECT() {
-  double tempR = R_div[index] / (maxADC/sensorVals[ECT_CHAN] - 1);
+  double tempR = R_divECT / (maxADC/sensorVals[ECT_CHAN] - 1);
   return tempBetaECT / (log(tempR) + tempConstECT);
 }
 

@@ -36,12 +36,12 @@ void lowerStartupMod();
 #define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
-#define TPS_CHAN   // UPDATE
-#define ECT_CHAN   // UPDATE
-#define MAP_CHAN   // UPDATE
-#define IAT_CHAN   // UPDATE
-#define OIN1_CHAN  // UPDATE
-#define OIN2_CHAN  // UPDATE
+#define TPS_CHAN 1  // UPDATE
+#define ECT_CHAN 2  // UPDATE
+#define MAP_CHAN 3  // UPDATE
+#define IAT_CHAN 4  // UPDATE
+#define OIN1_CHAN 5 // UPDATE
+#define OIN2_CHAN 6 // UPDATE
 
 const double Vs_5   = 5.00; //Volts
 const double Vref_5 = 4.98; // NEED TO PROPERLY MEASURE WITH FLUKE

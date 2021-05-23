@@ -39,7 +39,7 @@ bool Controller::readSensors() {
     adc->refresh();
     refreshAvailable = false;
   }
-  if (adc->get_validVals == 1)
+  if (adc->get_validVals() == 1)
   {
     const int* channels = adc->getChannels();
     sensorVals = channels;
