@@ -52,8 +52,8 @@ const double adcRef = Vref_5;
 const double maxADC = 4095;
 const double voltConv = adcRef / maxADC;
 //uncommented the following two lines 5/21/2021
-const double opampVoltageDivider = 1000.0 / (1000 + 470);
-const double adcToOpampVin = adcRef / (maxADC * opampVoltageDivider);
+//const double opampVoltageDivider = 1000.0 / (1000 + 470);
+//const double adcToOpampVin = adcRef / (maxADC * opampVoltageDivider);
 
 // Constants for calculating estimated injection times.
 const double engineDisplacement = 49.4E-6;    //meters^3

@@ -79,7 +79,8 @@ public:
 
   long getRPM (long int timePassed, int rev);
   double getTPS();
-  double getTemp(int pin);
+  double getIAT();
+  double getECT();
   double getMAP();
   double getAFR();
 

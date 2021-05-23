@@ -47,31 +47,24 @@ const int ECT_INDEX = 1;
 //The following constants are to complete the following eq for temperature
 //
 // Temp = tempBeta / (ln(R) + (tempBeta/T_0 - lnR_0)) //	where R is the resistance of the sensor (found using voltage divider) //	eq from: https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation //
-const double tempBeta[2] = {3988,3988}; // tolerance: {+/-1%,+/-1.5%}
+const double tempBetaIAT = 3988; // tolerance: {+/-1%,+/-1.5%}
+const double tempBetaECT = 3988;
 const double T_0 = 298.15; // temp in Kelvin at which R_0 values are taken
-const double lnR_0[2] = {9.21034,8.4849};//8.45531}; // {ln(10000 (10000 +/-1%)),ln(4700 (4559 to 4841))}
-const double tempConst[2] = {tempBeta[IAT_INDEX]/T_0 - lnR_0[IAT_INDEX], tempBeta[ECT_INDEX]/T_0 - lnR_0[ECT_INDEX]};
-const double R_div[2] = {9300,10000}; // resistance of other resistor in voltage divider
+const double lnR_0_IAT = 9.21034; //8.45531}; // {ln(10000 (10000 +/-1%)),ln(4700 (4559 to 4841))}
+const double lnR_0_ECT = 8.4849;
+const double tempConstIAT = tempBetaIAT/T_0 - lnR_0_IAT;
+const double tempConstECT = tempBetaECT/T_0 - lnR_0_ECT;
+const double R_divIAT = 9300; // resistance of other resistor in voltage divider
+const double R_divECT = 10000;
 
-double Controller::getTemp(int pin) {
-  // TODO: Create log lookup table.
+double Controller::getIAT() {
+  double tempR = R_div[index] / (maxADC/IAT_CHAN - 1);
+  return tempBetaIAT / (log(tempR) + tempConstIAT);
+}
 
-  int index; // identify which constants to use
-  double tempR;
-  switch(pin) { //not sure what the pin value represents
-    case IAT_Pin: 
-      index = IAT_INDEX;
-      tempR = R_div[index] / (maxADC/IAT_CHAN - 1);   // find resistance of sensor
-      break;
-    case ECT_Pin: 
-      index = ECT_INDEX;
-      tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
-      break;
-    default:  
-      index = ECT_INDEX; // just in case
-      tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
-  }
-  return tempBeta[index] / (log(tempR) + tempConst[index]);   // return temperature
+double Controller::getECT() {
+  double tempR = R_div[index] / (maxADC/ECT_CHAN - 1);
+  return tempBetaECT / (log(tempR) + tempConstECT);
 }
 
 //MAP Measurement
@@ -81,7 +74,7 @@ const double MAPVs = Vs_5;
 const double MAPDelta = 0.045; // should be between +/- 0.0675 volts (1.5 * 0.009 * Vs where Vs is 5)
 const double MAPSlope = 1E3/(MAPVs*0.009);  //Pa / Volt
 const double MAPOffset = 1E3*MAPDelta/(MAPVs*0.009) + 1E3*0.095/0.009;   //Pa
-const double MAPConversion = MAPSlope * adcToOpampVin;    // Pascals / 1023
+const double MAPConversion = MAPSlope * voltConv;    // Pascals / 1023
 
 double Controller::getMAP() {
   //Calculates MAP, outputs in Pa
@@ -108,7 +101,7 @@ double Controller::getAFR () {
   // Gets Reading from O2 Sensor.
   
   // Calculate initial AFR reading.
-  AFRVolts->addData(adcToOpampVin * OIN1_CHAN);
+  AFRVolts->addData(voltConv * OIN1_CHAN);
   AFR = AFRVolts->getData() * AO1slope + AO1minAFR;
   
   // If AFR is close to stoich, use narrow band output with greater precision.
