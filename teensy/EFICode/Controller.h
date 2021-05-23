@@ -3,6 +3,7 @@
 
 #include "Constants.h"
 #include "NoiseReduced.h"
+#include "spi_adc.h"
 
 class Controller {
 public:
@@ -79,7 +80,8 @@ public:
 
   long getRPM (long int timePassed, int rev);
   double getTPS();
-  double getTemp(int pin);
+  double getIAT();
+  double getECT();
   double getMAP();
   double getAFR();
 
@@ -98,6 +100,8 @@ private:
   // Has a value of true if the timer3 interrupt is detached from the "pulseOff" function.
   // Also prevents the injector from pulsing on if true.
   SPI_ADC* adc;
+  bool refreshAvailable;
+  const int* sensorVals;
 
   bool INJisDisabled;
   bool AFRFeedbackisEnabled;
