@@ -1,8 +1,9 @@
 #include "shape.h" /* Shape class interface */
 #include <stdio.h> /* for printf() */
+#include <stdlib.h>
 int main() {
  printf("test\n");
- Shape s1, s2; /* multiple instances of Shape */
+ Shape s1, s2;
  Shape_ctor(&s1, 0, 1);
  Shape_ctor(&s2, -1, 2);
  printf("Shape s1(x=%d,y=%d)\n", Shape_getX(&s1), Shape_getY(&s1));

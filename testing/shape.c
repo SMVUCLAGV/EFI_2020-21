@@ -1,5 +1,10 @@
 #include "shape.h" /* Shape class interface */
 /* constructor implementation */
+typedef struct Shape{
+ int16_t x; /* x-coordinate of Shape's position */
+ int16_t y; /* y-coordinate of Shape's position */
+} Shape;
+
 void Shape_ctor(Shape * const me, int16_t x, int16_t y) {
  me->x = x;
  me->y = y;
