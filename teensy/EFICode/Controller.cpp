@@ -74,7 +74,7 @@ void Controller::initializeParameters() {
     magnetsHit = 0;
 
 /*  SENDING BACK DATA ON TIMER1
-    // Set the max speed at which data is reported
+    // Set the max spee d at which data is reported
     minTimePerSampleReported = 1E3;  //In microseconds
 */
 
