@@ -1,4 +1,5 @@
 #include "shape.h" /* Shape class interface */
+
 /* constructor implementation */
 typedef struct Shape{
  int16_t x; /* x-coordinate of Shape's position */
