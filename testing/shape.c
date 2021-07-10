@@ -22,3 +22,7 @@ int16_t Shape_getY(Shape * const me) {
  return me->y;
 }
 
+int shapeSize() {
+    return sizeof(Shape);
+}
+
