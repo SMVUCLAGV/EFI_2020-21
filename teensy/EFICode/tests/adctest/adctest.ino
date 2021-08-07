@@ -99,7 +99,7 @@ void loop() {
   delay(20);
   a->refresh();
 
-  // Data should be invalid here
+  /*// Data should be invalid here
   data = a->getChannels();
   for (int i = 0; i < ADC_CHANNELS; i++) {
     sprintf(str, "%06i", data[i]);
@@ -107,8 +107,8 @@ void loop() {
     Serial.print(", ");
   }
   Serial.print("\n");
-
-  delay(20);
+*/
+  delay(20); 
   
   // Get Data once then print it
   data = a->getChannels();
@@ -119,7 +119,7 @@ void loop() {
   }
   Serial.print("\n");
 
-  // Get Data agains to make sure it doesn't change
+ /* // Get Data agains to make sure it doesn't change
   data = a->getChannels();
   for (int i = 0; i < ADC_CHANNELS; i++) {
     sprintf(str, "%06i", data[i]);
@@ -128,5 +128,5 @@ void loop() {
   }
   Serial.print("\n");
 
-  Serial.println(a->getConvTime());
+  Serial.println(a->getConvTime());*/
 }
