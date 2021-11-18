@@ -15,7 +15,7 @@ void setup() {
 //  // Conversion Start Pin
 //  pinMode(ADC_nCNVST_PIN, OUTPUT);
 //  digitalWrite(ADC_nCNVST_PIN, HIGH);
-//
+//  
 //  // Setup SPI
 //  pinMode(ADC_nCS_PIN, OUTPUT);
 //  digitalWrite(ADC_nCS_PIN, HIGH);

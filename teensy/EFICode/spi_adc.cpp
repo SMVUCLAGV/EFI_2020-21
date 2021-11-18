@@ -50,7 +50,6 @@ void SPI_ADC::refresh() {
   // Pull CNVST low for atleast 40 ns to start conversion
   digitalWrite(ADC_nCNVST_PIN, LOW);
   unsigned long temp = micros();
-    
   while( micros() < temp + 1); // waiting 100 ns (CHANGE TO TIMER?)
   digitalWrite(ADC_nCNVST_PIN, HIGH);
   SPI_ADC::validVals = false;
@@ -66,7 +65,7 @@ const int * SPI_ADC::getChannels() {
         
         SPI.beginTransaction(SPI_PARAMS);     // Get and store values from ADC FIFO
         digitalWrite(ADC_nCS_PIN, LOW);       // Select ADC
-        data |= (int(SPI.transfer(0)) << 8);  // MSBs first
+        data |= (int(SPI.transfer(0)) << 6);  // MSBs first
         digitalWrite(ADC_nCS_PIN, HIGH);      // De-Select ADC
         SPI.endTransaction();
 
@@ -75,8 +74,8 @@ const int * SPI_ADC::getChannels() {
 
         SPI.beginTransaction(SPI_PARAMS);     // Get and store values from ADC FIFO
         digitalWrite(ADC_nCS_PIN, LOW);       // Select ADC
-        data |= int(SPI.transfer(0));         // LSBs next
-        digitalWrite(ADC_nCS_PIN, HIGH);      // De-Select ADC
+        data |= int(SPI.transfer(0) >> 2);         // LSBs next
+        digitalWrite(ADC_nCS_PIN, HIGH);       // De-Select ADC
         SPI.endTransaction();
 
         valChannel[i] = data;

@@ -28,7 +28,7 @@ void lowerStartupMod();
 #define BUZZ_Pin  0 // MISLABELED ON cont board v1 Schematic (this is correct)
 #define LED_1     31
 
-#define HES_Pin GPIO_0// UPDATE
+#define HES_Pin GPIO_5// UPDATE
 #define DIP_1 35
 #define DIP_2 36
 #define DIP_3 39
@@ -36,10 +36,10 @@ void lowerStartupMod();
 #define PBTN 30
 
 // Assign Analog Sensors (from ADC Channels)
-#define TPS_CHAN 1  // UPDATE
-#define ECT_CHAN 2  // UPDATE
+#define TPS_CHAN 2  // UPDATE
+#define ECT_CHAN 0  // UPDATE
 #define MAP_CHAN 3  // UPDATE
-#define IAT_CHAN 4  // UPDATE
+#define IAT_CHAN 1 // UPDATE
 #define OIN1_CHAN 5 // UPDATE
 #define OIN2_CHAN 6 // UPDATE
 
@@ -49,7 +49,7 @@ const double Vs_3v3 = 3.30; //Volts
 
 // Multiple by this number to convert analog readings to voltages from Op amps
 const double adcRef = Vref_5;
-const double maxADC = 4095;
+const double maxADC =  1023;
 const double voltConv = adcRef / maxADC;
 //uncommented the following two lines 5/21/2021
 //const double opampVoltageDivider = 1000.0 / (1000 + 470);

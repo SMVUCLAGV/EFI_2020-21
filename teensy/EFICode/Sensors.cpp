@@ -13,16 +13,16 @@ long Controller::getRPM (long int timePassed, int rev) {
 const double TPSConversion = .0019685;
 const double TPSOffset = -.33746;
 */
-const double TPS_0Deg = 60;
-const double TPS_90Deg = 865;
+const double TPS_0Deg = 54;
+const double TPS_90Deg = 951;
 
 double Controller::getTPS() {
   unsigned long currThrottleMeasurementTime = micros();
   // calculate open throttle area (i think)
   //double newTPS = 1 - cos(((double(analogRead(TPS_Pin))-TPS_0Deg)/(TPS_90Deg - TPS_0Deg))*HALF_PI);
 
-  double newTPS_V = sensorVals[TPS_CHAN] * voltConv;
-  double newTPS = newTPS_V; //need to re-adjust TPS_0Deg and TPS_90Deg
+  double newTPSVal = sensorVals[TPS_CHAN];
+  double newTPS = this->doubleMap(newTPSVal, TPS_0Deg, TPS_90Deg, 0, 1); //need to re-adjust TPS_0Deg and TPS_90Deg
   
   if(newTPS < 0)
     newTPS = 0;
@@ -54,7 +54,7 @@ const double lnR_0_IAT = 9.21034; //8.45531}; // {ln(10000 (10000 +/-1%)),ln(470
 const double lnR_0_ECT = 8.4849;
 const double tempConstIAT = tempBetaIAT/T_0 - lnR_0_IAT;
 const double tempConstECT = tempBetaECT/T_0 - lnR_0_ECT;
-const double R_divIAT = 9300; // resistance of other resistor in voltage divider
+const double R_divIAT = 10000; // resistance of other resistor in voltage divider
 const double R_divECT = 10000;
 
 double Controller::getIAT() {

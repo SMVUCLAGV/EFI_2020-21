@@ -1,4 +1,4 @@
-#include "Controller.h"
+   #include "Controller.h"
 #include "Constants.h"
 #include "TimerThree.h"
 #include "TimerOne.h"
@@ -20,9 +20,9 @@ void setup() {
   // to trigger once right when they are attached. Our current workaround
   // is to attach the interrupt to a dummy function first that triggers
   // if the interrupt is already set. Then, it is safe to attach the normal interrupt.
-  attachInterrupt(digitalPinToInterrupt(HES_Pin), dummy, FALLING);
+  attachInterrupt(digitalPinToInterrupt(HES_Pin), dummy, RISING);
   detachInterrupt(digitalPinToInterrupt(HES_Pin));
-  attachInterrupt(digitalPinToInterrupt(HES_Pin), countRev, FALLING);
+  attachInterrupt(digitalPinToInterrupt(HES_Pin), countRev, RISING );
 
   // Initialize pulseOff timer.
   Timer3.initialize(1000000);

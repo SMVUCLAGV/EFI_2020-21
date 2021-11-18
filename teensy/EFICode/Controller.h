@@ -103,18 +103,18 @@ private:
   bool refreshAvailable;
   const int* sensorVals;
 
-  bool INJisDisabled;
+  bool INJisDisabled; //flag
   bool AFRFeedbackisEnabled;
   bool RPMFeedbackisEnabled;
 
-  int revolutions;
-  unsigned long totalRevolutions;
-  unsigned long startingRevolutions;
-  unsigned long previousRev;
+  int revolutions; //misc
+  unsigned long totalRevolutions; //misc
+  unsigned long startingRevolutions; //misc
+  unsigned long previousRev; //misc
   
-  unsigned long totalPulseTime;
+  unsigned long totalPulseTime;//misc
   unsigned long lastPulse;
-  long lastRPMCalcTime;
+  long lastRPMCalcTime;//RPM stuff
   long injectorPulseTime;
   int delayCount;
   
