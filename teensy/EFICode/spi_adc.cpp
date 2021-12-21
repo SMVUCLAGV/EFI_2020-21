@@ -16,9 +16,10 @@ SPI_ADC::SPI_ADC() {
   digitalWrite(ADC_nCNVST_PIN, HIGH);
 
   // End-of-Conversion Pin, Attach Interrupt
-  attachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN), dummy, FALLING);
-  detachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN));
-  attachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN), handle_EOC, FALLING);
+  pinMode(ADC_nEOC_PIN, INPUT);
+  //attachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN), dummy, FALLING);
+  //detachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN));
+  //attachInterrupt(digitalPinToInterrupt(ADC_nEOC_PIN), handle_EOC, FALLING);
 
   // Setup SPI
   pinMode(ADC_nCS_PIN, OUTPUT);
@@ -88,6 +89,11 @@ const int * SPI_ADC::getChannels() {
   }
 
   return ERRORCHANNELS; // obvious error (hopefully)
+}
+
+void SPI_ADC::checkEOC() {
+  if (!digitalRead(ADC_nEOC_PIN))
+    handle_EOC();
 }
 
 static void SPI_ADC::handle_EOC() {          // EOC interrupt

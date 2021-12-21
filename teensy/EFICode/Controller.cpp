@@ -38,6 +38,7 @@ bool Controller::readSensors() {
     adc->refresh();
     refreshAvailable = false;
   }
+  adc->checkEOC();
   if (adc->get_validVals() == 1)
   {
     const int* channels = adc->getChannels();
@@ -194,7 +195,8 @@ void Controller::disableINJ() {
 void Controller::pulseOn() {
   // disable data sending
   currentlySendingData = false;
-
+  if (injectorPulseTime > 2.5E5)
+    injectorPulseTime = 2.5E5;
   Timer3.setPeriod(injectorPulseTime);
   digitalWrite(INJ_Pin, HIGH);
   Timer3.start();
@@ -284,7 +286,8 @@ void Controller::lookupPulseTime() { // ********map IS AN INTEGER OPERATION*****
     // Add extra fuel for starting
     if (inStartingRevs())
     {
-        tempPulseTime *= startupModifier; // dictated by setStartupModifier() (this function has bugs)
+        //tempPulseTime *= startupModifier; // dictated by setStartupModifier() (this function has bugs)
+        tempPulseTime *= 1.5;
     }
 
     throttleAdjustment = computeThrottleAdjustment(); // 1 + TPS^2 (THIS IS LIKELY A BUGGY FUNCTION)

@@ -61,6 +61,7 @@ public:
   inline int getConvTime() {
     return convTime;
   }
+  void SPI_ADC::checkEOC();
 
 private:  
   volatile static bool validVals;
