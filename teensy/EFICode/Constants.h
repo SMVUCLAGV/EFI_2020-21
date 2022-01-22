@@ -59,16 +59,22 @@ const double voltConv = adcRef / maxADC;
 const double engineDisplacement = 49.4E-6;    //meters^3
 const double airSpecificGasConstant = 286.9;   //Joules / (kilograms * Kelvin) (from Ideal Gas / Molecular Mass of Air
 const double injectorFuelRate   = 10E-3;    //kilograms per second
-const double injectionConstant  = 
+const double injectionConstant  =
               engineDisplacement / (airSpecificGasConstant * injectorFuelRate);
-              // meters^2 / (kilograms * microseconds * Kelvin) 
+              // meters^2 / (kilograms * microseconds * Kelvin)
 const int openTime = 1000;          // Estimated amount of time for injector to open in microseconds.
 
-// Controls the total number of revolutions 
+// Controls the total number of revolutions
 const int numRevsForStart = 25;
 
 // Number of magnets the hall effect sensor must detect for one full revolution
 const int numMagnets = 1;
+
+//constants for fuel level sensor
+const unsigned long givenFlow = (38 / 60) / 10e6; //mass flow rate in g/microsecond 
+//(could be 38,60,80,128,190,230,or 248 depending on Injection System):
+const int totalFuel = 1000; //total amount of gas to begin with (mL)
+const double density = 0.789; //density in g/mL
 
 // Define the range of values that an AFR table value can take.
 const int MIN_AFR = 8;

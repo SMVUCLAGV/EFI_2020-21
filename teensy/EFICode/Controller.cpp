@@ -10,24 +10,24 @@
 Controller::Controller() {
     //Sets injector pin to output mode. All other pins default to input mode.
     pinMode(INJ_Pin, OUTPUT);
-  
+
     //Initializes Serial input and output at the specified baud rate.
     Serial.begin(BAUD_RATE);
     while(!Serial);
-    
-  
+
+
     // Initializing message
     Serial.write("Initializing...\n");
-  
+
     // Initialize parameters with their starting values.
     initializeParameters();
-    
+
     // Update sensors to their initial values.
     readSensors();
-  
+
     // Perform quick diagnostics here...
     // runDiagnostics();
-  
+
     // Indicate ready
     //Serial.write("Ready to go!\n");
 }
@@ -86,7 +86,7 @@ void Controller::initializeParameters() {
     // Initialize ADC
     adc = new SPI_ADC();
     refreshAvailable = true;
-    
+
     // Initialize AFR values.
     AFR = 0;
     AFRVolts = new NoiseReduced(100);
@@ -102,11 +102,11 @@ void Controller::initializeParameters() {
     MAPPeak = 0;
     MAPTrough = 0;
     updateddMAP = 0;
-    
+
     // Initialize MAP and RPM indicies to zero.
     mapIndex = 0;
     rpmIndex = 0;
-    
+
     // Initialize injector to disabled mode.
     // Used to detach the timer interrupt for pulsing off
     // when the engine is not running.
@@ -158,8 +158,8 @@ void Controller::countRevolution() {
   if (INJisDisabled) {
         enableINJ();
   }
-      
-  // Increment the number of revolutions 
+
+  // Increment the number of revolutions
   revolutions++;
   totalRevolutions++;
   startingRevolutions++;
@@ -169,7 +169,7 @@ void Controller::countRevolution() {
     digitalWrite(LED_1, HIGH);
     return;
   }
-      
+
   //Inject on every second revolution because this is a 4 stroke engine
   if (!detectEngineOff() && inStartingRevs()) {
       if (totalRevolutions % 2 == 1)
@@ -220,10 +220,10 @@ void Controller::pulseOff() {
 
 void Controller::updateRPM() {
   noInterrupts();
-  int tempRev = revolutions; //Prevents revolutions being read while it is being modified by the 
+  int tempRev = revolutions; //Prevents revolutions being read while it is being modified by the
   //countRevolution() function associated with the interrupt
   interrupts();
-  if (tempRev >= revsPerCalc) { 
+  if (tempRev >= revsPerCalc) {
     noInterrupts(); //To ensure that the interrupt of countRev doesn't get lost in case of bad timing of threads
     unsigned long currentRPMCalcTime = micros();
     if(currentRPMCalcTime - lastRPMCalcTime > 0) // only write if this value is positive (protect from overflow)
@@ -232,10 +232,18 @@ void Controller::updateRPM() {
     lastRPMCalcTime = currentRPMCalcTime;
     revolutions = 0; //Race Conditions Modification Problem
     interrupts();
-    
+
     // Should also dynamically change revsPerCalc. At lower RPM
     // the revsPerCalc should be lower but at higher RPM it should be higher.
   }
+}
+
+long Controller::getFuelLevel() {
+  //volumetric flow rate = mass flow rate / density
+  unsigned long fuelUsed = givenFlow * micro() / density; //in mL
+  totalFuelUsed += fuelUsed;
+  fuelLevel = totalFuel - totalFuelUsed;
+  return fuelLevel;
 }
 
 long Controller::interpolate2D(int blrow, int blcol, double x, double y) {
@@ -254,12 +262,12 @@ double Controller::doubleMap(double val, double minIn, double maxIn, double minO
   }
 
 void Controller::lookupPulseTime() { // ********map IS AN INTEGER OPERATION******
-    // Map the MAP and RPM readings to the scale of 
+    // Map the MAP and RPM readings to the scale of
     noInterrupts();
 
     scaledMAP = doubleMap(MAPAvg->getData(), minMAP, maxMAP, 0, numTableRows - 1); //number from 0 - numTableRows-1
     scaledRPM = doubleMap(RPM, minRPM, maxRPM, 0, numTableCols - 1); //number from 0 - numTableCols-1
-    
+
     // Clip out of bounds to the min or max value, whichever is closer.
     scaledMAP = constrain(scaledMAP, 0, numTableRows - 1);
     scaledRPM = constrain(scaledRPM, 0, numTableCols - 1);
@@ -314,7 +322,7 @@ void Controller::AFRFeedback() {
     // Stores the desired AFR value in a temporary location.
     // Just meant for readability of code.
     double dAFR = fuelRatioTable[mapIndex][rpmIndex];
-    
+
     // With more data on how the engine responds to input, will be able to
     // fine tune this feedback to work more efficiently.
     // The ratio of the new pulse time to the old pulse time should be
@@ -326,7 +334,7 @@ void Controller::AFRFeedback() {
         double dAFR = fuelRatioTable[mapIndex][rpmIndex];
         double deltaAFR = dAFR - AFR;
         unsigned long pressure = map(mapIndex, 0, numTableRows - 1, minMAP, maxMAP);
-        
+
         // With more data on how the engine responds to input, will be able to
         // fine tune this feedback to work more efficiently.
         // The ratio of the new pulse time to the old pulse time should be
@@ -392,7 +400,7 @@ bool Controller::inStartingRevs() {
 
 const double startupModifierSlope = -0.0147;
 const double startupModifierInt = 5.5559;
-void Controller::setStartupModifier() { 
+void Controller::setStartupModifier() {
   startupModifier = startupModifierSlope * ECT + startupModifierInt;
 }
 
