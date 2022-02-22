@@ -37,6 +37,11 @@ public:
   void updateRPM();
 
   // Performs 2D interpolation to lookup a pulse time for the given engine conditions.
+
+  long getFuelLevel();
+  //Finds the total amount of fuel used by measuiring the amount of fuel injected every revolution
+  //and accumulating the amount. Returns fuel level.
+
   void lookupPulseTime();
   double computeThrottleAdjustment();
 
@@ -70,7 +75,7 @@ public:
   // Turns the injector off.
   void pulseOff();
 
-  // Attaches the interrupt timer for shutting the injector off and 
+  // Attaches the interrupt timer for shutting the injector off and
   // sets the INJisDisabled flag to false.
   void enableINJ();
 
@@ -95,7 +100,7 @@ public:
   void setStartupModifier();
   void lowerStartupModifier();
   void raiseStartupModifier();
-  
+
 private:
   // Has a value of true if the timer3 interrupt is detached from the "pulseOff" function.
   // Also prevents the injector from pulsing on if true.
@@ -111,13 +116,15 @@ private:
   unsigned long totalRevolutions; //misc
   unsigned long startingRevolutions; //misc
   unsigned long previousRev; //misc
-  
+
   unsigned long totalPulseTime;//misc
   unsigned long lastPulse;
+  unsigned long totalFuelUsed;
+  unsigned long fuelLevel;
   long lastRPMCalcTime;//RPM stuff
   long injectorPulseTime;
   int delayCount;
-  
+
   //Data Retrieval
   bool enableSendingData;
   bool currentlySendingData; // used to disable data transmission during injection
@@ -140,7 +147,7 @@ private:
 
   int magnetsHit;
   double constModifier;
-  
+
   long RPM;
   long desiredRPM;
   double TPS;
@@ -157,12 +164,12 @@ private:
   NoiseReduced* MAPAvg;
   double AFR;
   NoiseReduced* AFRVolts;
-  
+
   //
   // For some undocumented reason they use this table to account for
   // Volumetric Efficiency so these values are more like AFR/VE
   //
-  double fuelRatioTable[numTableRows][numTableCols] = 
+  double fuelRatioTable[numTableRows][numTableCols] =
     {
     {14.5,14.8,15.0,15.3,15.3,15.2,14.6,14.3,13.8,13.6},  // minimum pressure
     {14.5,14.8,15.0,15.3,15.3,15.2,14.6,14.3,13.8,13.6},
