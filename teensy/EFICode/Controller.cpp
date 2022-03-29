@@ -13,7 +13,8 @@ Controller::Controller() {
 
     //Initializes Serial input and output at the specified baud rate.
     Serial.begin(BAUD_RATE);
-    while(!Serial);
+    long t = micros();
+    while(!Serial && (micros() - t < 1e6));
 
 
     // Initializing message
@@ -240,7 +241,7 @@ void Controller::updateRPM() {
 
 long Controller::getFuelLevel() {
   //volumetric flow rate = mass flow rate / density
-  unsigned long fuelUsed = givenFlow * micro() / density; //in mL
+  unsigned long fuelUsed = givenFlow * micros() / density; //in mL
   totalFuelUsed += fuelUsed;
   fuelLevel = totalFuel - totalFuelUsed;
   return fuelLevel;
